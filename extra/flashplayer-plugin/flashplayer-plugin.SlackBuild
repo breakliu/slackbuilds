@@ -1,0 +1,266 @@
+#!/bin/sh
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013  Eric Hameleers, Eindhoven, NL
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script 
+# ===========================
+# By:           Eric Hameleers <alien@slackware.com>
+# For:          flashplayer-plugin
+# Descr:        Adobe flash player plugin for mozilla
+# URL:
+#   http://labs.adobe.com/technologies/flashplatformruntimes/flashplayer11/
+# Needs:        
+# Changelog:    
+# 10.0.d20.7-1:  16/Dec/2008 by Eric Hameleers <alien@slackware.com>
+#                * Initial build.
+# 10.0.d21.1-1:  20/Dec/2008 by Eric Hameleers <alien@slackware.com>
+#                * Update.
+# 10.0.22.87-1:  26/feb/2009 by Eric Hameleers <alien@slackware.com>
+#                * Update (plugs vulnerability).
+# 10.0.32.18-1:  10/aug/2009 by Patrick J. Volkerding <volkerdi@slackware.com>
+#                * Update (plugs vulnerability).
+# 10.0.42.34-1:  14/dec/2009 by Patrick J. Volkerding <volkerdi@slackware.com>
+#                * Update (plugs vulnerability).
+# 10.091510-1:   15/sep/2010 by Eric Hameleers <alien@slackware.com>
+#                * Preview1 of "flash player square".
+# 10.092710-1:   28/sep/2010 by Eric Hameleers <alien@slackware.com>
+#                * Preview2 of "flash player square".
+# 10_2.111710-1: 28/sep/2010 by Eric Hameleers <alien@slackware.com>
+#                * New preview of "flash player square" for 64-bit Linux; there
+#                  is no more 32-bit "square" version, because new developments
+#                  are being folded into regular flashplayer10.
+# 11b1.071311-1: 25/jul/2011 by Eric Hameleers <alien@slackware.com>
+#                * Update to version 11 beta 1.
+#                  Looks like 64-bit support has finally been folded into the
+#                  mainstream development of the plugin.
+# 11b1.080811-1: 12/aug/2011 by Eric Hameleers <alien@slackware.com>
+#                * Update to version 11 beta 2.
+# 11r1.090611-1: 11/sep/2011 by Eric Hameleers <alien@slackware.com>
+#                * Update to version 11 release candidate 1.
+# 11.0.1.152-1:  04/oct/2011 by Eric Hameleers <alien@slackware.com>
+#                * Update to stable release 11!
+# 11.1.102.55-1: 05/feb/2012 by Eric Hameleers <alien@slackware.com>
+#                * Update to release 11.1.
+# 11.1.102.62-1: 05/feb/2012 by Eric Hameleers <alien@slackware.com>
+#                * Minor update.
+# 11.2.202.228-1:29/mar/2012 by Eric Hameleers <alien@slackware.com>
+#                * Minor update.
+# 11.2.202.233-1:20/apr/2012 by Eric Hameleers <alien@slackware.com>
+#                * Minor update.
+# 11.2.202.235-1:05/may/2012 by Eric Hameleers <alien@slackware.com>
+#                * Minor update.
+# 11.2.202.236-1:19/jun/2012 by Eric Hameleers <alien@slackware.com>
+#                * Minor update.
+# 11.2.202.238-1:15/aug/2012 by Eric Hameleers <alien@slackware.com>
+#                * Security update.
+# 11.2.202.243-1:10/oct/2012 by Eric Hameleers <alien@slackware.com>
+#                * Update.
+# 11.2.202.251-1:08/nov/2012 by Eric Hameleers <alien@slackware.com>
+#                * Update.
+# 11.2.202.258-1:13/dec/2012 by Eric Hameleers <alien@slackware.com>
+#                * Update.
+# 11.2.202.261-1:12/jan/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-01.
+# 11.2.202.270-1:12/feb/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-04.
+# 11.2.202.273-1:01/mar/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-08.
+# 11.2.202.275-1:13/mar/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-09.
+# 11.2.202.280-1:10/apr/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-11.
+# 11.2.202.285-1:15/may/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-14.
+# 11.2.202.291-1:12/jun/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-16.
+# 11.2.202.297-1:21/jul/2013 by Eric Hameleers <alien@slackware.com>
+#                * Update fixes critical vulnerabilities. See APSB13-17.
+# 
+# Run 'sh flashplayer-plugin.SlackBuild' to build a Slackware package.
+# The package (.txz) and .txt file as well as build logs are created in /tmp .
+# Install it using 'installpkg'. 
+#
+# -----------------------------------------------------------------------------
+
+# Set initial variables:
+
+PRGNAM=flashplayer-plugin
+VERSION=${VERSION:-"11.2.202.297"}
+MAJVER=$(echo $VERSION | cut -d. -f1)
+BUILD=${BUILD:-1}
+TAG=${TAG:-"alien"}
+
+# Where do we look for sources?
+SRCDIR=$(cd $(dirname $0); pwd)
+
+# Place to build (TMP) package (PKG) and output (OUTPUT) the program:
+TMP=${TMP:-/tmp/build}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+# Automatically determine the architecture we're building on:
+MARCH=${ARCH:-$( uname -m )}
+case "$MARCH" in
+  x86_64)
+    LIBDIRSUFFIX="64"
+    ARCHBITS="64"
+    export ARCH=x86_64
+    ;;
+  i?86)
+    LIBDIRSUFFIX=""
+    ARCHBITS="32"
+    export ARCH=i386
+    ;;
+  *)
+    echo "Unsupported architecture '$ARCH'"
+    exit 1
+    ;;
+esac
+
+SOURCE="$SRCDIR/install_flash_player_${VERSION}_linux_${ARCH}.tar.gz"
+SRCURL="http://fpdownload.macromedia.com/get/flashplayer/pdc/${VERSION}/install_flash_player_${MAJVER}_linux.${ARCH}.tar.gz"
+
+##
+## --- with a little luck, you won't have to edit below this point --- ##
+##
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}" | tee $OUTPUT/error-${PRGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+P1=${1:-1}
+
+# Save old umask and set to 0022:
+_UMASK_=$(umask)
+umask 0022
+
+# Create working directories:
+mkdir -p $OUTPUT          # place for the package to be saved
+mkdir -p $TMP/tmp-$PRGNAM # location to build the source
+mkdir -p $PKG             # place for the package to be built
+rm -rf $PKG/*             # always erase old package's contents
+rm -rf $TMP/tmp-$PRGNAM/* # remove the remnants of previous build
+rm -rf $OUTPUT/{configure,make,install,error,makepkg}-$PRGNAM.log
+                          # remove old log files
+
+# Source file availability:
+if ! [ -f ${SOURCE} ]; then
+  echo "Source '$(basename ${SOURCE})' not available yet..."
+  # Check if the $SRCDIR is writable at all - if not, download to $OUTPUT
+  [ -w "$SRCDIR" ] || SOURCE="$OUTPUT/$(basename $SOURCE)"
+  if [ -f ${SOURCE} ]; then echo "Ah, found it!"; continue; fi
+  if ! [ "x${SRCURL}" == "x" ]; then
+    echo "Will download file to $(dirname $SOURCE)"
+    wget -nv -T 20 -O "${SOURCE}" "${SRCURL}" || true
+    if [ $? -ne 0 -o ! -s "${SOURCE}" ]; then
+      echo "Downloading '$(basename ${SOURCE})' failed... aborting the build."
+      mv -f "${SOURCE}" "${SOURCE}".FAIL
+      exit 1
+    fi
+  else
+    echo "File '$(basename ${SOURCE})' not available... aborting the build."
+    exit 1
+  fi
+fi
+
+if [ "$P1" == "--download" ]; then
+  echo "Download complete."
+  exit 0
+fi
+
+# --- PACKAGE BUILDING ---
+
+echo "++"
+echo "|| $PRGNAM-$VERSION"
+echo "++"
+
+#cd $TMP/tmp-$PRGNAM
+cd $PKG
+echo "Extracting the source archive(s) for $PRGNAM..."
+tar -xvf ${SOURCE}
+chown -R root:root *
+chmod -R u+w,go+r-w,a+X-s .
+
+case "$ARCH" in
+  x86_64)
+    if ! file libflashplayer.so | grep -q "ELF 64-bit" ; then
+      echo "The downloaded plugin is not for the '$ARCH' architecture!"; exit 1
+    fi
+    ;;
+  i?86)
+    if ! file libflashplayer.so | grep -q "ELF 32-bit" ; then
+      echo "The downloaded plugin is not for the '$ARCH' architecture!"; exit 1
+    fi
+    ;;
+esac
+
+## Move lib to lib64 if needed:
+#[ "$ARCH" = "x86_64" ] && mv usr/lib usr/lib${LIBDIRSUFFIX}
+
+# Remove 32-bit bogus compatibility in 64-bit package:
+[ "$ARCH" = "x86_64" ] && rm -rf $PKG/usr/lib
+
+# Install the plugin to the mozilla plugins dir and fix library file attributes:
+mkdir -p usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+mv libflashplayer.so usr/lib${LIBDIRSUFFIX}/mozilla/plugins/
+find usr/lib${LIBDIRSUFFIX} -name "*.so" -exec chmod 755 {} \;
+
+# Add this to the doinst.sh:
+mkdir -p $PKG/install
+cat <<EOINS >> $PKG/install/doinst.sh
+# Update the desktop database:
+if [ -x usr/bin/update-desktop-database ]; then
+  chroot . /usr/bin/update-desktop-database usr/share/applications > /dev/null 2>&1
+fi
+
+# Update hicolor theme cache:
+if [ -d usr/share/icons/hicolor ]; then
+  if [ -x /usr/bin/gtk-update-icon-cache ]; then
+    chroot . /usr/bin/gtk-update-icon-cache -f -t usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+  fi
+fi
+
+EOINS
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+mv *.txt $PKG/usr/doc/$PRGNAM-$VERSION/ || true
+cp -a $SRCDIR/$(basename $0) $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $SRCDIR/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz 2>&1 | tee $OUTPUT/makepkg-${PRGNAM}.log
+cd $OUTPUT
+md5sum ${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz > ${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz.md5
+cd -
+cat $PKG/install/slack-desc | grep "^${PRGNAM}" > $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txt
+
+# Restore the original umask:
+umask ${_UMASK_}
+
