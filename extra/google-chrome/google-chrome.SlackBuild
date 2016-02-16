@@ -35,9 +35,14 @@ case "$ARCH" in
   x86_64) DEBARCH="amd64" ; LIBDIRSUFFIX="64" ; ARCH=x86_64 ;;
   *) echo "Package for $(uname -m) architecture is not available." ; exit 1 ;;
 esac
+
+# download chrome deb
+wget "https://dl.google.com/linux/direct/google-chrome-${RELEASE}_current_${DEBARCH}.deb"
+
 # Get the version from the Debian/Ubuntu .deb (thanks to Fred Richards):
 VERSION=$(ar p google-chrome-${RELEASE}_current_${DEBARCH}.deb control.tar.gz 2> /dev/null | tar zxO ./control 2> /dev/null | grep Version | awk '{print $2}' | cut -d- -f1)
 BUILD=${BUILD:-1}
+
 
 
 if [ ! $UID = 0 ]; then
@@ -74,7 +79,10 @@ OUTPUT=${OUTPUT:-/tmp}
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $PKG
-ar p $CWD/google-chrome-${RELEASE}_current_${DEBARCH}.deb data.tar.lzma | lzma -d | tar xv || exit 1
+
+# http://docs.slackware.com/howtos:software:google-chrome
+ar p $CWD/google-chrome-${RELEASE}_current_${DEBARCH}.deb data.tar.xz | xz -d | tar xv || exit 1
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
@@ -104,14 +112,27 @@ for i in $( find $PKG/usr/man -type l ) ; do
 done
 
 # Install a .desktop launcher:
-sed -i -e "s#Icon=google-chrome#Icon=/opt/google/chrome/product_logo_256.png#" \
-  $PKG/opt/google/chrome/google-chrome.desktop
 mkdir -p $PKG/usr/share/applications
 ln -s /opt/google/chrome/google-chrome.desktop \
   $PKG/usr/share/applications/google-chrome.desktop
 
+# Symlink desktop environment icons https://gist.github.com/ruario/9672759
+for png in $PKG/opt/google/chrome/product_logo_*.png; do
+  pngsize="${png##*/product_logo_}"
+  for dir in hicolor default.kde4 gnome; do
+    mkdir -p $PKG/usr/share/icons/$dir/${pngsize%.png}x${pngsize%.png}/apps
+    (
+      cd $PKG/usr/share/icons/$dir/${pngsize%.png}x${pngsize%.png}/apps/
+      ln -s /opt/google/chrome/product_logo_${pngsize} google-chrome.png
+    )
+  done
+done
+
+
+
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

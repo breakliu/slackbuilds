@@ -104,7 +104,7 @@
 # Set initial variables:
 
 PRGNAM=flashplayer-plugin
-VERSION=${VERSION:-"11.2.202.297"}
+VERSION=${VERSION:-"11.2.202.569"}
 MAJVER=$(echo $VERSION | cut -d. -f1)
 BUILD=${BUILD:-1}
 TAG=${TAG:-"alien"}
@@ -137,7 +137,7 @@ case "$MARCH" in
 esac
 
 SOURCE="$SRCDIR/install_flash_player_${VERSION}_linux_${ARCH}.tar.gz"
-SRCURL="http://fpdownload.macromedia.com/get/flashplayer/pdc/${VERSION}/install_flash_player_${MAJVER}_linux.${ARCH}.tar.gz"
+SRCURL="http://fpdownload.adobe.com/get/flashplayer/pdc/${VERSION}/install_flash_player_${MAJVER}_linux.${ARCH}.tar.gz"
 
 ##
 ## --- with a little luck, you won't have to edit below this point --- ##
