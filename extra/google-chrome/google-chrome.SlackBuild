@@ -37,7 +37,9 @@ case "$ARCH" in
 esac
 
 # download chrome deb
-wget "https://dl.google.com/linux/direct/google-chrome-${RELEASE}_current_${DEBARCH}.deb"
+if ! [ -f "google-chrome-${RELEASE}_current_${DEBARCH}.deb" ]; then
+  wget "https://dl.google.com/linux/direct/google-chrome-${RELEASE}_current_${DEBARCH}.deb"
+fi
 
 # Get the version from the Debian/Ubuntu .deb (thanks to Fred Richards):
 VERSION=$(ar p google-chrome-${RELEASE}_current_${DEBARCH}.deb control.tar.gz 2> /dev/null | tar zxO ./control 2> /dev/null | grep Version | awk '{print $2}' | cut -d- -f1)
